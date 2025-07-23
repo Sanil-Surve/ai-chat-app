@@ -8,9 +8,10 @@ type Message = {
   isUser: boolean;
 };
 
-const ChatScreen = () => {
+const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const [loading, setLoading] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -25,7 +26,11 @@ const ChatScreen = () => {
     });
 
     socketRef.current.on('message', (response: string) => {
-      addMessage(response, false);
+      setLoading(true);
+      setTimeout(() => {
+        addMessage(response, false);
+        setLoading(false);
+      }, 500); // simulate slight delay
     });
 
     socketRef.current.on('disconnect', () => {
@@ -86,6 +91,9 @@ const ChatScreen = () => {
           )}
           contentContainerStyle={styles.messagesContainer}
         />
+        {loading && (
+          <Text style={{ textAlign: 'left', color: 'gray', fontStyle: 'italic', marginBottom: 8 }}>Bot is Thinking...</Text>
+        )}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -138,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default Index;
