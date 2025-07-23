@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { io, Socket } from 'socket.io-client';
 
 type Message = {
@@ -73,27 +73,30 @@ const ChatScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={[styles.message, item.isUser ? styles.userMessage : styles.botMessage]}>
-            <Text>{item.text}</Text>
-          </View>
-        )}
-        contentContainerStyle={styles.messagesContainer}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="Type your message..."
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={0} enabled={true}>
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center", color: "black", fontFamily: "nunito700", fontSize: 24, marginTop: 30, fontWeight: "bold" }}>VishwaAI</Text>
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={[styles.message, item.isUser ? styles.userMessage : styles.botMessage]}>
+              <Text>{item.text}</Text>
+            </View>
+          )}
+          contentContainerStyle={styles.messagesContainer}
         />
-        <Button title="Send" onPress={handleSend} />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="Type your message..."
+          />
+          <Button title="Send" onPress={handleSend} />
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
