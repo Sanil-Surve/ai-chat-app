@@ -16,7 +16,7 @@ const Index = () => {
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io('http://31.97.202.251:8888', {
+    socketRef.current = io('https://www.vishwaai.online', {
       transports: ['websocket'],
     });
 
